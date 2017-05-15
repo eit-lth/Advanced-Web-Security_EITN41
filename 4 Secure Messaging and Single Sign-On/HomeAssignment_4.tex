@@ -1,0 +1,298 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{url}
+\usepackage{amssymb}
+%\usepackage[hidelinks]{hyperref}
+%\usetikzlibrary{arrows,shadows}
+\usepackage{pgf-umlsd}
+
+\input{code.tex}
+
+
+% needed for the OTR protocol, otherwise greek letters in math mode won't work..
+\renewcommand{\mess}[4][0]{
+  \stepcounter{seqlevel}
+  \path
+  (#2)+(0,-\theseqlevel*\unitfactor-0.7*\unitfactor) node (mess from) {};
+  \addtocounter{seqlevel}{#1}
+  \path
+  (#4)+(0,-\theseqlevel*\unitfactor-0.7*\unitfactor) node (mess to) {};
+  \draw[->,>=angle 60] (mess from) -- (mess to) node[midway, above]
+  {#3};    
+}
+
+\begin{document}
+
+\title{Home Assignment 4}
+\author{Advanced Web Security}
+\date{2016}
+
+\maketitle
+
+\section*{B-assignments}
+\textbf{Complete the four B-assignments below and solve them in groups of two students.}
+
+\begin{description}
+
+	\item[B-1]{SAML assertions, which are formatted using XML, are digitally signed by the IdP. For this, and other similar purposes, there is a recommendation by IETF and W3C on how to combine signatures with XML. This is called XML Signatures. Read about and understand XML Signatures. Make sure that you get an overview of the \texttt{<signature>} tag and its contents, as well as the difference between enveloped, enveloping and detached signatures.\\
+    \textbf{Assessment}:
+	\begin{itemize}
+		\item There will be two Moodle-questions on XML signatures. One is general with a focus on understanding the different parts of the \texttt{<signature>} tag and one is focused on the difference between enveloped, enveloping and detached signatures. Though you are not supposed to know the details, it can be a good idea to have the specification accessible when you answer the questions. Both students must finish the quiz.
+	\end{itemize}}
+
+	\item[B-2]{Anytime during an OTR chat, one may run SMP for mutual authentication. Here, you will implement
+    a simplified version of the OTR protocol, utilizing SMP, see protocol below. In the first part,
+    you will need to negotiate a shared key using the Diffie-Hellman key exchange.
+    Secondly, you will run the Socialist Millionaire protocol, yielding mutual authentication.
+    Lastly, you shall send an encrypted message to the server. The server then replies with a response for you to enter in Moodle.
+    
+    All operations are to be calculated in the group $\mathbb{Z}_p^*$, i.e. mod $p$. The generators are $g = g_1 = 2$.
+    The prime number $p$ is defined (in the OTR documentation) as:
+    \begin{verbatim}
+FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
+29024E08 8A67CC74 020BBEA6 3B139B22 514A0879 8E3404DD
+EF9519B3 CD3A431B 302B0A6D F25F1437 4FE1356D 6D51C245
+E485B576 625E7EC6 F44C42E9 A637ED6B 0BFF5CB6 F406B7ED
+EE386BFB 5A899FA5 AE9F2411 7C4B1FE6 49286651 ECE45B3D
+C2007CB8 A163BF05 98DA4836 1C55D39A 69163FA8 FD24CF5F
+83655D23 DCA3AD96 1C62F356 208552BB 9ED52907 7096966D
+670C354E 4ABC9804 F1746C08 CA237327 FFFFFFFF FFFFFFFF
+    \end{verbatim}
+    
+    All integers sent to and from the server are encoded in hexadecimal string representation, e.g. if we
+    want to send the decimal number 1337, we interpret it in hexadecimal, 0x539, and send the string ``539''. This can
+    be achieved by the Python function \texttt{format(1337, 'x')} or the Java function \texttt{num.toString(16)}, where
+    \texttt{num} is a \texttt{BigInteger} object with the value $1337$. All randomly chosen numbers are assumed to be in
+    $\mathbb{Z}_p^*$. The numbers sent from Bob will or will not be acknowledged by Alice. You will take the role as Bob, meaning
+    that you have to read the ack/nak messages as well. In the last part of the protocol (Secure Chat), the encryption
+    is a simple xor, using the shared D-H key as a One Time Pad (OTP), e.g. 
+    \emph{enc\_msg} = \emph{msg} \texttt{xor} \emph{D-H key}.
+    
+%\begin{figure}[h]
+    \begin{sequencediagram}
+        %\newthread[white]{s}{Alice}
+        %\newthread{c}{Bob}
+        \newinst[4]{s}{Alice}
+        \newinst[4]{c}{Bob}
+        
+        % D-H KE
+        \begin{sdblock}{\emph{D-H Key Exchange}}{}
+        \mess{s}{$g^{x_1}$}{c}
+        \mess{c}{$g^{x_2}$}{s}
+        \mess{s}{$g^{x_2}$: ack / nak}{c}
+        \end{sdblock}
+        
+        % SMP
+        \begin{sdblock}{\emph{Socialist Millionaire}}{}
+		% exchange g2 = g1^{a2b2}
+        \mess{s}{$g_1^{a_2}$}{c}
+        \mess{c}{$g_1^{b_2}$}{s}
+        \mess{s}{$g_1^{b_2}$: ack / nak}{c}
+        % exchange g3 = g1^{a3b3}
+        \mess{s}{$g_1^{a_3}$}{c}
+        \mess{c}{$g_1^{b_3}$}{s}
+        \mess{s}{$g_1^{b_3}$: ack / nak}{c}
+        % exchange Pa, Pb
+        \mess{s}{$P_a$}{c}
+        \mess{c}{$P_b$}{s}
+        \mess{s}{$P_b$: ack /nak}{c}
+        % exchange Qa, Qb
+		\mess{s}{$Q_a$}{c}
+        \mess{c}{$Q_b$}{s}
+        \mess{s}{$Q_b$: ack /nak}{c}
+        % exchange (QaQb^-1)^{al*be}
+        \mess{s}{$(Q_a Q_b^{-1})^{a_3}$}{c}
+        \mess{c}{$(Q_a Q_b^{-1})^{b_3}$}{s}
+        \mess{s}{$(Q_a Q_b^{-1})^{b_3}$: ack / nak}{c}
+        % authenticated?
+        \mess{s}{Authentication: ack / nak}{c}
+        \end{sdblock}
+        
+        % chat
+        \begin{sdblock}{\emph{Secure Chat}}{}
+        \mess{c}{encrypted message}{s}
+        \mess{s}{response}{c}
+        \end{sdblock}
+    \end{sequencediagram}
+    
+    \clearpage
+
+	The server is located at \url{eitn41.eit.lth.se:1337}. You will be given a test client in Python3 and Java, so
+    you don't have to figure out which socket readers to use. As an example, sending the message 
+    (in hexadecimal, un-encrypted)
+    \begin{center}
+    \texttt{1337}
+    \end{center}
+    will yield the response
+    \begin{center}
+    \texttt{0b29099972244f2569bb5f6f4e34760cc7bf4645}
+    \end{center}
+    
+    The shared secret is calculated as
+    $H(g^{xy} ~\| ~\textrm{'shared passphrase'})$
+    where the shared passphrase is ``\texttt{eitn41~<3}'', and $H$ is SHA-1. 
+    You shall interpret $g^{xy}$ and the passphrase as a UTF-8 encoded byte array, e.g. if the number is $123123$,
+    it should be represented (in Python3) as \texttt{b'\textbackslash x01\textbackslash xe0\textbackslash xf3'}. 
+    The function \\
+    \texttt{x.to\_bytes((x.bit\_length() + 7) // 8, 'big')} may come in handy. A similar Java function is
+    \texttt{num.toByteArray()}, where \texttt{num} is a \texttt{BigInteger}. Remeber to remove leading bytes of 
+    \texttt{0x00} since Java represents the numbers in 2's complement.
+
+	\textbf{Assessment}:
+	\begin{itemize}
+		\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+        One upload per group is sufficient.
+        
+		\item There will be one Moodle question following the problem statement above. 
+        \textbf{Both students must finish the Moodle quiz}.
+        There will be a test quiz on Moodle, where you can try your implementation as many times as you like. 
+        The test quiz will not be graded.
+	\end{itemize}
+    }
+
+	\item[B-3]{Using textbook RSA for encrypting messages is insecure for several reasons, one being that it
+    is deterministic. There is a padding scheme known as \emph{Optimal Asymmetric Encryption Padding}, or OAEP, to solve
+    this problem. The OAEP padding scheme turns RSA into a probabilistic encryption scheme and adds the property
+    of \emph{all-or-nothing}, meaning that you either get the full message or nothing at all. Standard RSA may leak some
+    information without revealing the complete secret.
+    
+    The latest version of OAEP is given in RFC 8017. In this problem you will implement one part of OAEP directly from the RFC specification, namely the MGF1 function. This function takes an input string of arbitrary length and outputs a string of (almost) arbitrary length. The specification of MGF1 can be found in Appendix B.2.1 of RFC 8017 and you will also need to implement the I2OSP function in Section 4.1. In this assignment you will use the SHA-1 hash function as the hash function in MGF1.\\
+    Your program will take two inputs, one \texttt{mgfSeed} and one \texttt{maskLen}, and output a string of \texttt{maskLen} bytes.
+    As an example the input
+    \begin{center}
+    \begin{tabular}{l}
+	\texttt{mgfSeed = 0123456789abcdef} (hexadecimal)\\
+    \texttt{maskLen = 30} (decimal)\\
+    \end{tabular}
+    \end{center}
+    will output the (hexadecimal) string
+    \begin{center}
+    \texttt{18a65e36189833d99e55a68dedda1cce13a494c947817d25dc80d9b4586a}\\
+    \end{center}
+    Note again that both the \texttt{mgfSeed} and the output string are here written in their hexadecimal notation so the length of the mgfSeed is 8 bytes and the length of the output is 30 bytes.\\
+    \textbf{Assessment}:
+	\begin{itemize}
+		\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+        One upload per group is sufficient.
+        
+		\item There will be one Moodle question following the problem statement above. 
+        \textbf{Both students must finish the Moodle quiz}.
+        There will be a test quiz on Moodle, where you can try your implementation as many times as you like on an example different from the one given above. The test quiz will not be graded.
+	\end{itemize}
+}
+	\item[B-4]{In this assignment you will implement the rest of OAEP, using the MGF1 function from the previous assignment. The scheme is given in Section 7.1 of RFC 8017. Note that encryption and decryption is not a part of the assignment, but you should implement both the encoding and the decoding part of OAEP. The parameter L will be chosen as \texttt{null} in the scheme.
+    
+    Your implementation of \texttt{OAEP\_encode} will take two parameters, the message $M$ to be encoded and the seed, and output the encoded message $EM$; \texttt{OAEP\_encode}$(M)=EM$.
+    Your implementation of \texttt{OAEP\_decode} will take one parameter, the message $EM$ to be decoded, and output the decoded message $M$; \texttt{OAEP\_decode}$(EM)=M$. You should take hexadecimal strings as input and also output hexadecimal strings. The length of the encoded message should be 128 bytes, which would be preparing the message to be encrypted with 1024-bit RSA. 
+    
+    You can use the following test strings to check your implementation:
+    \begin{center}
+    \begin{tabular}{lcl}
+	\texttt{M} & = & \texttt{fd5507e917ecbe833878}\\
+    \texttt{seed} & = & \texttt{1e652ec152d0bfcd65190ffc604c0933d0423381}\\
+    \texttt{EM} &=& \texttt{0000255975c743f5f11ab5e450825d93b52a160aeef9d3778a18b7aa067f90b2}\\                                 &&\texttt{178406fa1e1bf77f03f86629dd5607d11b9961707736c2d16e7c668b367890bc}\\
+    &&\texttt{6ef1745396404ba7832b1cdfb0388ef601947fc0aff1fd2dcd279dabde9b10bf}\\
+   && \texttt{c51f40e13fb29ed5101dbcb044e6232e6371935c8347286db25c9ee20351ee82}\\
+    \end{tabular}
+    \end{center}
+    
+    Having implemented OAEP directly from the specification and understanding how OAEP works, you now know how RSA is really used in practice!\\
+    \textbf{Assessment}:
+	\begin{itemize}
+		\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+        One upload per group is sufficient.
+		\item There will be two Moodle questions following the problem statement above. One for encoding and one for decoding. 
+        \textbf{Both students must finish the Moodle quiz}.
+        There will be a test quiz on Moodle, where you can try your implementation as many times as you like on an example different from the one given above. The test quiz will not be graded.
+	\end{itemize}
+
+    
+    }
+\end{description}
+
+\clearpage
+
+\section*{C-Assignments}
+\textbf{Complete one out of the two C-assignments below and solve them in groups of two students.}
+
+\begin{description}
+	\item[C-1]{The security department at LTH is using a home made web page for giving student their grade in the best course
+	at LTH -- Advanced Web Security. The web page uses HTTP GET requests to handle the grading. Every message sent to the server
+	needs to be signed, using the HMAC-SHA1 algorithm, in order to be accepted. The URL is of the form\\
+	``\texttt{https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle\&grade=5\&signature=6823\ldots ba36}''.\\
+	Due to the web page being written by a hungover Ph.D. student, it is not as secure as one would expect.
+	The server side code is as follows:
+	\begin{lstlisting}[float=htb, style=customc, language=php] 
+<?php
+	function calc_signature($data) {
+		// truncate signature to 10 bytes
+		$sig = substr(hash_hmac('sha1', $data, $key), 0, 20);
+		return $sig;
+	}
+
+	function check_signature($sig1, $sig2) {
+		$n = max(strlen($sig1), strlen($sig2));
+		for ($i = 0; $i <= $n; $i++) {
+			// chrcmp compares chars at index i, return 1 if chars are equal, 0 otherwise
+			if (!chrcmp($sig1, $sig2, $i)) {
+				return '0';
+			}
+		}
+		return '1';
+	}
+
+	// get the user supplied data
+	if (isset($_GET['name']) && isset($_GET['grade']) && isset($_GET['signature'])) {
+		$name = $_GET['name'];
+		$grade = $_GET['grade'];
+		$sig = $_GET['signature'];
+	
+		// concatenate name and grade
+		$data = $name . $grade;
+		$sig2 = calc_signature($data);
+
+		echo check_signature($sig, $sig2);
+	} else {
+		echo 'Not enough arguments';
+	}
+?>
+	\end{lstlisting}
+	
+	The signature is calculated as $s = \textrm{HMAC}(\textrm{name}||\textrm{grade}, k)$, where $||$ denotes 
+	string concatenation and $k$ is the secret key. The signature is truncated to 10 bytes (20 hexadecimal digits).
+	The function \texttt{chrcmp} is not optimized for the current hardware, 
+	thus taking a considerable amount of time.
+	Exploit the weakness in the web page to be able to send any message you like with a valid signature, 
+	without knowledge of the secret key. Propose a good way to counter these kind of attacks.
+    
+    Your program should take the name and grade as parameters and output a valid signature.
+    There will be a quiz where you will be given the name and grade. You shall answer with the
+    signature in hexadecimal.
+
+    \textbf{Assessment}:
+	\begin{itemize}
+		\item Summarize your work in a short report, making it clear that the program works as intended.
+        
+        \item There will be one Moodle question following the problem statement above. 
+        \textbf{Both students must finish the Moodle quiz}.
+        
+		\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se.
+        
+		\item Upload your report to Moodle (it will be manually graded).
+	\end{itemize}
+	}
+
+	\item[C-2]{OpenID Connect can be seen as an authentication layer on top of OAuth 2.0. Read about OpenID Connect an summarize how it works on approximately 4 pages. Make sure to cover the relation to OAuth 2.0 and how id tokens are used in the protocol. You should also cover the different authentication flows that are possible in the protocol.
+
+	\textbf{Assessment}:
+	\begin{itemize}
+		\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se.
+		\item Upload your report to Moodle (it will be manually graded).
+	\end{itemize}
+	}
+\end{description}
+
+\end{document}

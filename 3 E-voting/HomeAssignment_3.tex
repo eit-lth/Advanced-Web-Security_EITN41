@@ -1,0 +1,198 @@
+\documentclass{article}
+\usepackage{graphicx}
+\usepackage{fullpage}
+\usepackage{booktabs}
+\usepackage{listings}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
+\usepackage{amssymb}
+
+
+\begin{document}
+
+\title{Home Assignment 3}
+\author{Advanced Web Security}
+\date{2016}
+
+\maketitle
+
+\section*{B-assignments}
+\textbf{Complete the four B-assignments below and solve them in groups of two students.}
+
+\begin{description}
+
+	\item[B-1]{In an upcoming presidental election, the inhabitants can vote on one of the candidates --
+	Grump and Flinton. The voting system is a new e-voting system deployed by your company. Being the
+	security engineer, it is your job to implement a function that counts the votes. The votes are encrypted
+	using the Paillier cryptosystem\footnote{\url{https://en.wikipedia.org/wiki/Paillier_cryptosystem}}. Since the votes are anonymous, you are not allowed to decrypt a single vote.
+	Rather, you have to utilize the homomorphic property of Paillier:
+	\[
+	E(v_1) \cdot E(v_2) = E(v_1 + v_2)
+	\]	
+	to get the total sum of votes. A vote for Mr. Grump is encoded as a +1, whereas a vote for Mrs. Flinton
+	is encoded as -1. If the sum of all votes are positive, Mr. Grump wins and vice versa. Note that in
+	$\mathbb{Z}_n$, the number ``$-x$'' is written as ``$n-x$''.
+    
+    Implement a program that takes as input
+	\begin{itemize}
+		\item[-] Two prime numbers $p$ and $q$.
+		\item[-] An element $g \in \mathbb{Z}_{n^2}^{*}$.
+		\item[-] A file containing the encrypted votes, one per line.
+	\end{itemize}
+
+	The program output should be the sum of the votes, e.g. 5, -3.
+	
+	\textbf{Example:}\\
+	We have three voters and all voted for Mrs. Flinton. The primes used are
+	$(p, q) = (5, 7)$, $g = 867$, and the following (integer) ciphertexts:
+	\begin{verbatim}
+	929
+	296
+	428
+	\end{verbatim}
+	The product of ciphertexts is $c = c_1 \cdot c_2 \cdot c_3 = 52 ~(\textrm{mod } n^2)$
+	which gives the sum of votes, $v_{tot} = 32 = -3 ~(\textrm{mod } n)$
+	
+    \textbf{Note:} plaintexts are reduced mod $n$, ciphertexts are reduced mod $n^2$.
+    
+    \textbf{Assessment}:
+	\begin{itemize}
+		\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+        One upload per group is sufficient.
+        
+		\item There will be one Moodle question following the problem statement above. 
+        \textbf{Both students must finish the Moodle quiz}.
+        There will be a test quiz on Moodle, where you can try your implementation as many times as you like. 
+        The test quiz will not be graded.
+	\end{itemize}}
+
+	\item[B-2]{After winning the election, Mrs. Flinton is now in charge of the military
+    weaponry, i.e. the nuclear launch codes. Being that Mrs. Flinton is incapable of handling
+    technology, she accidentally launched nuclear weapons against a foreign country.
+    To stop a plausible World War III, you have to stop the missiles. The deactivation process
+    utilizes a (k,n) threshold scheme, and you need to provide the master secret of this scheme
+    to deactivate the nuclear launch.
+
+    Implement a program that takes as input
+	\begin{itemize}
+		\item[-] parameters $k$ and $n$ with $3\leq k<n\leq 8$,
+		\item[-] your private polynomial,
+		\item[-] polynomial shares from collaborating participants.
+	\end{itemize}
+	The program output should be the deactivation code (an integer).
+	
+    \textbf{Example:}\\
+    You are participant 1 out of 8 in a (5,8) threshold scheme.
+    All participants have each chosen a private polynomial of degree 4.
+    The secret master polynomial is simply the sum of all your individual private polynomials, so that
+    \[f(x) = f_{1}(x) + f_{2}(x) + ... + f_{n}(x),\]
+    and the master secret is the constant term (an integer) of this polynomial.
+
+    Your private polynomial is $f_{1}(x) = 13 +  8x + 11x^2 +  1x^3 +  5x^4$.\\
+    You have generously shared points on your polynomial, one with each other participant;
+    \begin{eqnarray*}
+    f_{1}(2) &=& 161,\\
+    f_{1}(3) &=& 568,\\
+    f_{1}(4) &=& 1565,\\
+    f_{1}(5) &=& 3578,\\
+    f_{1}(6) &=& 7153,\\
+    f_{1}(7) &=& 12956,\\
+    f_{1}(8) &=& 21773.
+    \end{eqnarray*}
+    You have also been given shares from the other participants' polynomials, one from each participant;
+    \begin{eqnarray*}
+    f_{2}(1) &=& 75,\\
+    f_{3}(1) &=& 75,\\
+    f_{4}(1) &=& 54,\\
+    f_{5}(1) &=& 52,\\
+    f_{6}(1) &=& 77,\\
+    f_{7}(1) &=& 54,\\
+    f_{8}(1) &=& 43.
+    \end{eqnarray*}
+
+Collaborating with participants 2, 4, 5 and 7, they reveal their points on the master polynomial to you;
+    \begin{eqnarray*}
+    f(2) &=& f_{1}(2) + ... + f_{8}(2) = 2782,\\
+    f(4) &=& f_{1}(4) + ... + f_{8}(4) = 30822,\\
+    f(5) &=& f_{1}(5) + ... + f_{8}(5) = 70960,\\
+    f(7) &=& f_{1}(7) + ... + f_{8}(7) = 256422.
+    \end{eqnarray*}
+
+    The deactivation code in this case is 110.
+
+    \textbf{Assessment}:
+	\begin{itemize}
+		\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+        One upload per group is sufficient.
+        
+		\item There will be one Moodle question following the problem statement above. 
+        \textbf{Both students must finish the Moodle quiz}.
+        There will be a test quiz on Moodle, where you can try your implementation as many times as you like. 
+        The test quiz will not be graded.
+	\end{itemize}}
+
+	\item[B-3]{Several topics and problems encountered in the course so far are related to the notions of \textit{semantic security} and \textit{malleability} of cryptosystems. This is also related to the ciphertext indistinguishability properties of cryptosystems, i.e., \textit{IND-CPA}, \textit{IND-CCA} and \textit{IND-CCA2}. Read about these different notions and understand their properties, definitions and how they apply to RSA and ElGamal encryption. You are free to use any source you wish, but the Wikipedia entries are very good and sufficient for our purpose.\\
+	\textbf{Assessment}:
+	\begin{itemize}
+		\item There will be one Moodle-question with statements regarding the different properties. Four of these statements are correct and your task is to identify these statements. You will receive 0.5p for each correct answer and -0.5p for each wrong answer. You can never get less than 0.0p. It can be a good idea to have the material you have used accessible when you answer the questions, but it is extremely recommended that you read and understand it in advance. Both students must finish the quiz.
+	\end{itemize}}
+	
+    \item[B-4]{Read the paper below,
+\begin{center}
+\begin{minipage}{0.8\textwidth}
+Quisquater, Guillou and Berson. ``How to Explain Zero-Knowledge Protocols to Your Children''. Advances in Cryptology - CRYPTO '89, 1990.
+\end{minipage}
+\end{center}
+How are Zero-Knowledge proofs explained in the paper? What is meant by a simulator and how is it used in the paper to show that the proof is zero-knowledge?\\
+\textbf{Assessment}:
+		\begin{itemize}
+			\item Answer the questions and save the answers as a pdf file. Upload the file to Moodle (It will be manually graded). Both students must do this.
+		\end{itemize}
+
+}
+
+\end{description}
+
+\clearpage
+
+\section*{C-Assignments}
+\textbf{Complete one out of the two C-assignments below and solve them in groups of two students.}
+
+\begin{description}
+	\item[C-1]{Assume that we have a commitment scheme $x = h(v, k)$, where $v$ is a 1-bit commitment,
+    $k$ is a $K$-bit random string and $h$ is a hash function with output truncated to $X$ bits.
+    Fix $K$ to be 16 bits. For different appropriate choices of $X$, simulate
+    \begin{itemize}
+    	\item[a)] The probability of breaking the binding property of the scheme.
+        \item[b)] The probability of breaking the concealing property of the scheme.
+    \end{itemize}
+    What can you say about how the probabilities varies with $X$? Make sure you clearly present
+    your algorithms for computing the probabilities.
+    
+    \textbf{Assessment}:
+	\begin{itemize}
+    	\item Summarize your work in a short report, making it clear that the program works as intended.
+        
+		\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se. 
+        It is enough that one student per group does this.
+        
+		\item Upload your report to Moodle (it will be manually graded). Both students must do this.
+	\end{itemize}}
+
+	\item[C-2]{Helios is a well-known implementation of an Internet based voting systems. Read about Helios and summarize how it works. Also compare the system to the electronic voting schemes described in the lecture notes. 2-3 pages are appropriate. The following articles will be helpful, but you are free to look for other sources of information.
+\begin{center}
+\begin{minipage}{0.8\textwidth}
+Adida. Helios: Web-based open-audit voting, 2008. See \href{http://static.usenix.org/event/sec08/tech/full\_papers/adida/adida.pdf}{http://static.usenix.org/event/sec08/tech/full\_papers/adida/adida.pdf}\\\\
+Adida, de Marneffe, Pereira and Quisquater. Electing a University President using Open-Audit Voting: Analysis of real-world use of Helios, 2009. See \href{http://static.usenix.org/event/evtwote09/tech/full\_papers/adida-helios.pdf}{http://static.usenix.org/event/evtwote09/tech/full\_papers/adida-helios.pdf}
+\end{minipage}
+\end{center}
+Do not dive into too many details. Instead, show that you have understood the main parts of the system and which techniques are used to make it secure.\\
+	\textbf{Assessment}:
+	\begin{itemize}
+		\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se. It is enough that one student per group does this.
+		\item Upload your report to Moodle (it will be manually graded). Both students must do this.
+	\end{itemize}
+	}
+\end{description}
+
+\end{document}
