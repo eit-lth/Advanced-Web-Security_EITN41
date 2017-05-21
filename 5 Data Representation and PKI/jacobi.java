@@ -1,4 +1,4 @@
-import java . math .*;
+import java.math.*;
 class Jacobi {
 	static BigInteger zero = BigInteger . ZERO ;
 	static BigInteger one = BigInteger .ONE;
