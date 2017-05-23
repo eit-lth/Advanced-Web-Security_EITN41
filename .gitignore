@@ -1,0 +1,9 @@
+# latex
+
+*.log
+*.aux
+*.out
+
+# vim
+
+*.swp
