@@ -5,8 +5,7 @@
 \usepackage{listings}
 \usepackage{url}
 \usepackage{amsmath}
-
-\input{code.tex}
+\usepackage[hidelinks]{hyperref}
 
 
 \begin{document}
@@ -48,8 +47,8 @@
     \]
     where $p$ is an odd prime number. For composite numbers, e.g. $M = p \cdot q$, the \emph{Jacobi symbol} is used
     instead, which is just a product of the Legendre symbol of the prime factors of $M$.
-    There are more properties for the Jacobi symbol\footnote{\url{https://en.wikipedia.org/wiki/Jacobi_symbol#Properties}}. You are given the code
-    for calculating the Jacobi symbol, see listing \ref{lst:jacobi} and \ref{lst:jacobi_java}. 
+    There are more properties for the Jacobi symbol\footnote{\url{https://en.wikipedia.org/wiki/Jacobi_symbol\#Properties}}. 
+	You are given the code for calculating the Jacobi symbol\footnote{\url{https://github.com/eit-lth/Advanced-Web-Security_EITN41/tree/master/5\%20Data\%20Representation\%20and\%20PKI/code}}.
     
     Read the paper,
     \begin{center}
@@ -93,84 +92,6 @@ Encrypted bits:
     The PKG computed the private key, $r$, to be\\
     \texttt{814a8c2282ca8f4d0f2b2b72dfeeee6e5e3d8f438c039bdb5d059550739fdcec}\\
     Decrypting the above bits, we get [\texttt{1, 1, -1}] which we decode to \texttt{110}$_2$ = $6$.
-    \begin{lstlisting}[float=htb, style=customc, language=python, caption={The Jacobi symbol in Python.}, label={lst:jacobi}]
-    def jacobi(a, m):
-        j = 1
-
-        a %= m
-        while a:
-            t = 0
-            while not a & 1:
-                a = a >> 1
-                t += 1
-
-            if t&1 and m%8 in (3, 5):
-                j = -j
-
-            if (a % 4 == m % 4 == 3):
-                j = -j
-
-            a, m = m % a, a
-
-        return j if m == 1 else 0
-    \end{lstlisting}
-    
-    \newpage
-    
-    \begin{lstlisting}[float=h, style=customc, language=java, caption={The Jacobi symbol in Java.}, label={lst:jacobi_java}]
-import java.math.*;
-
-class Jacobi {
-
-	static BigInteger zero = BigInteger.ZERO;
-	static BigInteger one = BigInteger.ONE;
-	static BigInteger two = new BigInteger("2");
-	static BigInteger three = new BigInteger("3");
-	static BigInteger four = new BigInteger("4");
-	static BigInteger five = new BigInteger("5");
-	static BigInteger eight = new BigInteger("8");
-
-	public static void main(String[] args) {
-		BigInteger a = new BigInteger("12");
-		BigInteger b = new BigInteger("17");
-		System.out.println("jacobi (12/17) (= -1): " + jacobi(a, b));
-	}
-
-	static int jacobi(BigInteger n, BigInteger m) {
-		int j = 1;
-		int t;
-		BigInteger tmp;
-
-		n = n.mod(m);
-		while (!n.equals(zero)) {
-			t = 0;
-		
-			while (!n.and(one).equals(one)) {
-				n = n.divide(two);
-				t++;
-			}
-
-			BigInteger mmod8 = m.mod(eight);
-			if (((t & 0x01) == 1) && (mmod8.equals(three) || mmod8.equals(five))) {
-				j = -j;
-			}
-
-			if (n.mod(four).equals(three) && m.mod(four).equals(three)) {
-				j = -j;
-			}
-
-			tmp = n;
-			n = m.mod(n);
-			m = tmp;
-		}
-		if (m.equals(one)) {
-			return j;
-		}
-		return 0;
-	}
-
-}
-    \end{lstlisting}
     
     \textbf{Do not fear}: The assignment is not as hard as it looks.
     
