@@ -2,6 +2,8 @@
 \usepackage{graphicx}
 \usepackage{fullpage}
 \usepackage{booktabs}
+\usepackage{url}
+\usepackage[hidelinks]{hyperref}
 %\usepackage[a4paper]{geometry}
 
 \begin{document}
@@ -112,38 +114,58 @@
 \clearpage
 
 \section*{C-Assignments}
-\textbf{Complete one out of the two C-assignments below and solve them in groups of two students.}
+\textbf{For grade 4, complete the C-assignment below and solve it in groups of $\leq 2$ students.}
 
 \begin{description}
-	\item[C-1]{Implement the disclosure attack and simulate the performance of the attack with some different values for $b, m$ and $N$. Keep $n$ fixed. Show how the attack complexity is affected by the different choices. How is the attack affected by different usage patterns, i.e., if the attacked user is a very frequent or infrequent mailer?
+	\item[C-1]{The CIA led by the CTC director Carrie Mathison have received valuable intel on ongoing terrorism activity.
+		The infamous terrorist Abu Nazir have been communicating through a Mix network\footnote{\url{https://en.wikipedia.org/wiki/Mix_network}}, 
+		a system that allows for anonymous communication. The security team have been analyzing the network traffic to and from the Mix, but
+		they are having trouble making sense of all the data. You, a recently graduated engineer with a passion for security is hired to assist
+		the CIA in this delicate matter. Having just read about the disclosure attack on Mixes, you want to use this attack to disclose the
+		IP addresses of Nazir's partners. 
+		
+		The format of the log files is a standard \texttt{.pcap} format containing enough information
+		to find the partners. In general, to find $m$ disjoint sets out of a large number of sets is an 
+		NP\footnote{\url{https://en.wikipedia.org/wiki/NP_(complexity)}} problem. In this case, we assume that when Nazir sends data to a partner,
+		it is to one and only one partner in a batch. In the same batch, no other sender will send data to any of Nazir's partners. Thus,
+		we can be sure that every new set we find which is disjoint to the previously saved sets can safely be saved.
 
-	\textbf{Assessment}:
-	\begin{itemize}
-		\item Summarize your work in a short report, making it clear that the program works as intended.
-		\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se. It is enough that one student per group does this.
-		\item Upload your report to Moodle (it will be manually graded). Both students must do this.
-	\end{itemize}
-	}
-
-	\item[C-2]{Mixmaster and Mixminion are two of the most well known remailers, i.e., systems based on the original Chaum mixes. Read about these systems in e.g., 
-		\begin{center}
-		\begin{minipage}{0.8\textwidth}
-		G. Danezis, R. Dingledine, and N. Mathewson. Mixminion: Design of a type III anonymous remailer protocol. In 2003 IEEE Symposium on Security and Privacy, pp. 2--15. IEEE CS, May 2003.\\\\
-		U. M\"oller, L. Cottrell, P. Palfrader, and L. Sassaman. Mixmaster Protocol Version 2. Draft, July 2003. Available at http://freehaven.net/anonbib/cache/mixmaster-spec.txt.
-		\end{minipage}
-		\end{center}
-		Write a short report focusing on
+		Implement a program that takes as input:
 		\begin{itemize}
-		\item How the implementations address some different problems in Mix networks.
-		\item How the implementations differ from each other.
+			\item[-] Abu Nazir's IP address.
+			\item[-] The Mix's IP address.
+			\item[-] The number of partners to Nazir.
+			\item[-] A \texttt{.pcap} file which contains the sniffed network traffic to and from the Mix.
 		\end{itemize}
-		The report should be 2-3 pages.\\
-	\textbf{Assessment}:
+		The program output should be the integer sum of the partners' IP addresses.
+
+		\textbf{Example:}\\
+		Assume we have disclosed all 3 of Nazir's partners IP addresses, which are:
+		\begin{verbatim}
+			85.14.156.21
+			47.56.124.15
+			210.25.145.218
+		\end{verbatim}
+		Interpreting the IPs as 4-byte (big-endian) integers in hexadecimal:
+		\begin{verbatim}
+			55 0e 9c 15 -> 0x550e9c15 = 1427020821
+			2f 38 7c 0f -> 0x2f387c0f = 792230927
+			d2 19 91 da -> 0xd21991da = 3524891098
+		\end{verbatim}
+		The sum of the IPs is $5744142846$.
+
+		\textbf{Note:} The integer representation of an IP address is valid, for example, the IP address of \texttt{google.se}
+		is \texttt{173.194.79.94}, which converts into the integer $2915192670$, and you may access Google by entering
+		\url{http://2915192670} in your browser.
+
+		\textbf{Assessment}:
 	\begin{itemize}
-		\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se. It is enough that one student per group does this.
-		\item Upload your report to Moodle (it will be manually graded). Both students must do this.
+		\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se. It is enough that one student per group does this.
+		\item There will be a Moodle question following the problem statement above. Both students must finish the Moodle quiz. There will be
+			a test quiz on Moodle where you can try your implementation as many times as you like. The test quiz will not be graded.
 	\end{itemize}
 	}
+
 \end{description}
 
 \end{document}
