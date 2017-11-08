@@ -128,7 +128,7 @@
 				\texttt{L058e2c0d7d103a7b45b2a4408ac3389eb10048fe}
 			\end{tabular}
 		\end{center}
-		the node \texttt{2354cf006ef4eeefeddf29b9e68d5cb1918ed589} is concatenated with the node first node in the path, \texttt{69968f8d734080390646bd0f3afff78baadebd2b}. The SHA-1 hash if this concatenation is then appended to \texttt{ed64e17870e63f55b71542f0818ff7639b1f9985} and so on. The resulting Merkle root is \texttt{6f51120bc17e224de27d3d27b32f05d0a5ffb376}.
+		the node \texttt{2354cf006ef4eeefeddf29b9e68d5cb1918ed589} is concatenated with the first node in the path, \texttt{69968f8d734080390646bd0f3afff78baadebd2b}. The SHA-1 hash if this concatenation is then appended to \texttt{ed64e17870e63f55b71542f0818ff7639b1f9985} and so on. The resulting Merkle root is \texttt{6f51120bc17e224de27d3d27b32f05d0a5ffb376}.
 		
 		
 		{\bf Part 2, Full node.}\\ Implement a program that takes an integer index $i$, another integer index $j$, and a set of leaves, ($\ell(0),\ell(1),\ell(2),\ldots,\ell(n-1)$), in a Merkle tree. The leaves are given as hexadecimal strings as input, but should be interpreted as byte arrays. The input is summarized in a file, starting with the integer index $i$, the integer index $j$, and then followed by the leaves, one input on each line. Your program should provide: 
