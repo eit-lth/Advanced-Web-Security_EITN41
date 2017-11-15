@@ -17,7 +17,7 @@
 \maketitle
 
 \section*{B-assignments}
-\textbf{For grade 3, complete the three B-assignments below and solve them in groups of two students.}
+\textbf{For grade 3, complete the three B-assignments below and solve them in groups of $\leq 2$ students.}
 
 \begin{description}
 	\item[B-1]{Assume that we have a commitment scheme $x = h(v, k)$, where $v$ is a 1-bit commitment,
@@ -34,19 +34,15 @@
 		\begin{itemize}
 			\item Summarize your work in a short report, making it clear that the program works as intended.
 			
-			\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se. 
+			\item Upload your report to Urkund, jonathan.sonnerup.lu@analys.urkund.se. 
 			It is enough that one student per group does this.
 			
 			\item Upload your report to Moodle (it will be manually graded). Both students must do this.
 		\end{itemize}}
 		
 		
-		\item[B-2]{After winning the election, Mrs. Flinton is now in charge of the military
-			weaponry, i.e. the nuclear launch codes. Being that Mrs. Flinton is incapable of handling
-			technology, she accidentally launched nuclear weapons against a foreign country.
-			To stop a plausible World War III, you have to stop the missiles. The deactivation process
-			utilizes a (k,n) threshold scheme, and you need to provide the master secret of this scheme
-			to deactivate the nuclear launch.
+		\item[B-2]{A recently elected, semi-competent, leader of a large country accidentally initiated a nuclear missile launch. Your task is to prevent disaster by deactivating the detonation circuit. The deactivation process
+			utilizes a (k,n) threshold scheme, and you need to provide the master secret of the scheme.
 			
 			Implement a program that takes as input
 			\begin{itemize}
@@ -97,30 +93,28 @@
 			
 			\textbf{Assessment}:
 			\begin{itemize}
-				\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
-				One upload per group is sufficient.
-				
-				\item There will be one Moodle question following the problem statement above. 
-				\textbf{Both students must finish the Moodle quiz}.
-				There will be a test quiz on Moodle, where you can try your implementation as many times as you like. 
-				The test quiz will not be graded.
+				\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se. Only one student per group must do this.
+				\item There will be a Moodle question following the problem statement above. Both students must finish the Moodle quiz. There will be	a test quiz on Moodle where you can try your implementation as many times as you like. The test quiz will not be graded.
 			\end{itemize}}
 			
 			\item[B-3]{Several topics and problems encountered in the course so far are related to the notions of \textit{semantic security} and \textit{malleability} of cryptosystems. This is also related to the ciphertext indistinguishability properties of cryptosystems, i.e., \textit{IND-CPA}, \textit{IND-CCA} and \textit{IND-CCA2}. Read about these different notions and understand their properties, definitions and how they apply to RSA and ElGamal encryption. You are free to use any source you wish, but the Wikipedia entries are very good and sufficient for our purpose.\\
 				\textbf{Assessment}:
 				\begin{itemize}
-					\item There will be one Moodle-question with statements regarding the different properties. Four of these statements are correct and your task is to identify these statements. You will receive 0.5p for each correct answer and -0.5p for each wrong answer. You can never get less than 0.0p. It can be a good idea to have the material you have used accessible when you answer the questions, but it is extremely recommended that you read and understand it in advance. Both students must finish the quiz.
+					\item There will be one Moodle-question with statements about differences. Four of these statements are correct and your task is to identify these.  
+					
+					You will receive 1 point for each correct answer and -1 point for each error. You will need 3 points to pass. Thus, your best bet is to either pick 3 choices that you are absolutely certain are correct, or pick 5 choices among which you know that you have picked the 4 correct ones.
+					
+					It can be a good idea to have the material accessible when you answer the questions, but it is extremely recommended that you read and understand them it advance. Both students must finish the quiz.
 				\end{itemize}}
 				
 				
 			\end{description}
 			
 			\section*{C-Assignments}
-			\textbf{For grade 4, complete the C-assignment below and solve it in groups of two students.}
+			\textbf{For grade 4, complete the C-assignment below and solve it in groups of $\leq 2$ students.}
 			
 			\begin{description}
-				\item[C-1]{In an upcoming presidental election, the inhabitants can vote on one of the candidates --
-					Grump and Flinton. The voting system is a new e-voting system deployed by your company. Being the
+				\item[C-1]{In a presidential election, the people can vote on one of two candidates. Let us call them Grump and Flinton. The voting system is a new e-voting system deployed by your company. Being the
 					security engineer, it is your job to implement a function that counts the votes. The votes are encrypted
 					using the Paillier cryptosystem\footnote{\url{https://en.wikipedia.org/wiki/Paillier_cryptosystem}}. Since the votes are anonymous, you are not allowed to decrypt a single vote.
 					Rather, you have to utilize the homomorphic property of Paillier:
@@ -128,7 +122,7 @@
 					E(v_1) \cdot E(v_2) = E(v_1 + v_2)
 					\]	
 					to get the total sum of votes. A vote for Mr. Grump is encoded as a +1, whereas a vote for Mrs. Flinton
-					is encoded as -1. If the sum of all votes are positive, Mr. Grump wins and vice versa. Note that in
+					is encoded as -1. If the sum of all votes is positive, Mr. Grump wins and vice versa. Note that in
 					$\mathbb{Z}_n$, the number ``$-x$'' is written as ``$n-x$''.
 					
 					Implement a program that takes as input
@@ -142,26 +136,21 @@
 					
 					\textbf{Example:}\\
 					We have three voters and all voted for Mrs. Flinton. The primes used are
-					$(p, q) = (5, 7)$, $g = 867$, and the following (integer) ciphertexts:
+					$(p, q) = (5, 7)$, $g = 867$, and we have the following (integer) ciphertexts:
 					\begin{verbatim}
 					929
 					296
 					428
 					\end{verbatim}
-					The product of ciphertexts is $c = c_1 \cdot c_2 \cdot c_3 = 52 ~(\textrm{mod } n^2)$
+					The product of the ciphertexts is $c = c_1 \cdot c_2 \cdot c_3 = 52 ~(\textrm{mod } n^2)$
 					which gives the sum of votes, $v_{tot} = 32 = -3 ~(\textrm{mod } n)$
 					
 					\textbf{Note:} plaintexts are reduced mod $n$, ciphertexts are reduced mod $n^2$.
 					
 					\textbf{Assessment}:
 					\begin{itemize}
-						\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
-						One upload per group is sufficient.
-						
-						\item There will be one Moodle question following the problem statement above. 
-						\textbf{Both students must finish the Moodle quiz}.
-						There will be a test quiz on Moodle, where you can try your implementation as many times as you like. 
-						The test quiz will not be graded.
+						\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se. Only one student per group must do this.
+						\item There will be a Moodle question following the problem statement above. Both students must finish the Moodle quiz. There will be	a test quiz on Moodle where you can try your implementation as many times as you like. The test quiz will not be graded.
 					\end{itemize}}
 					
 				\end{description}
