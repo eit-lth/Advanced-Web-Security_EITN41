@@ -65,7 +65,7 @@
 			where $\bar{x}$ and $s$ are your sample-estimated average and standard deviation, respectively.
 			You may use $\lambda=3.66$.
 			Below we present the minimum and maximum values for $u$ and $k$
-			that you will be able to handle. \textbf{Note}: A simulation should take no longer than 30 minutes.
+			that you should be able to handle. Make sure you can handle all integer values between these extremes. \textbf{Note}: A simulation should take no longer than 30 minutes.
 			
 			\textbf{Example}: In the tables below you are given two examples of simulations results. 
 			In the first example,
@@ -191,10 +191,11 @@
 		\item[C-1]{Implement the coin withdrawal (the version with 2k quadruples) in the untraceable e-cash
 			scheme given in the lecture notes.
 			\begin{itemize}
-				\item You may use a variant of RSA with easily manageable numbers.
-				\item The data transfer can be simulated locally.
-				\item The extended Euclidean algorithm can be used to find the inverse of 3 mod $n$.
+				\item You may use a variant of RSA with easily manageable numbers. Note though that too small numbers might get you in trouble when you try to unblind if you are not careful.
+				\item The data transfer can be simulated locally inside the program.
+				\item The extended Euclidean algorithm can be used to find the inverse of 3 mod $x$. You are free to use existing code for this algorithm as long as you reference it properly.
 				\item Choose sensible functions $f$ and $h$.
+				\item Be careful when choosing you $r_i$. Not all choices are suitable.
 			\end{itemize}
 			
 			\textbf{Assessment}:
