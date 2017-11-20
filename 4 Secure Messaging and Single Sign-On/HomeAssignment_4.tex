@@ -33,27 +33,90 @@
 	\maketitle
 	
 	\section*{B-assignments}
-	\textbf{For grade 3, complete the three B-assignments below and solve them in groups of two students.}
+	\textbf{For grade 3, complete the three B-assignments below and solve them in groups of $\leq 2$ students.}
 	
 	\begin{description}
 		
 		\item[B-1]{SAML assertions, which are formatted using XML, are digitally signed by the IdP. For this, and other similar purposes, there is a recommendation by IETF and W3C on how to combine signatures with XML. This is called XML Signatures. Read about and understand XML Signatures. Make sure that you get an overview of the \texttt{<signature>} tag and its contents, as well as the difference between enveloped, enveloping and detached signatures.\\
 			\textbf{Assessment}:
 			\begin{itemize}
-				\item There will be two Moodle-questions on XML signatures. One is general with a focus on understanding the different parts of the \texttt{<signature>} tag and one is focused on the difference between enveloped, enveloping and detached signatures. Though you are not supposed to know the details, it can be a good idea to have the specification accessible when you answer the questions. Both students must finish the quiz.
+				\item There will be two Moodle-questions on XML signatures. One is general with a focus on understanding the different parts of the \texttt{<signature>} tag and one is focused on the difference between enveloped, enveloping and detached signatures. Though you are not supposed to know the details, it can be a good idea to have the specification accessible when you answer the questions. You need to correctly answer both questions in order to pass. Note that the second question can have more than one correct alternative. Both students must finish the quiz.
 			\end{itemize}}
 			
 			
-			
-			\item[B-2]{Using textbook RSA for encrypting messages is insecure for several reasons, one being that it
+			\item[B-2]{The security department at LTH is using a home made web page for giving students their grade in the best course
+				at LTH -- Advanced Web Security. The web page uses HTTP GET requests to handle the grading. Every message sent to the server
+				needs to be signed, using the HMAC-SHA1 algorithm, in order to be accepted. The URL is of the form\\
+				``\texttt{https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle\&grade=5\&signature=6823\ldots ba36}''.\\
+				Due to the web page being written by a hungover Ph.D. student, it is not as secure as one would expect.
+				The server side code is given on the next page.
+				The signature is calculated as $s = \textrm{HMAC}(\textrm{name}||\textrm{grade}, k)$, where $||$ denotes 
+				string concatenation and $k$ is the secret key. The signature is truncated to 10 bytes (20 hexadecimal digits).
+				The function \texttt{chrcmp} is not optimized for the current hardware, 
+				thus taking a considerable amount of time.
+				Exploit the weakness in the web page to be able to send any message you like with a valid signature, 
+				without knowledge of the secret key. Propose a good way to counter these kind of attacks.
+				
+				Your program should take the name and grade as parameters and output a valid signature as a hexadecimal string.
+				
+				\textbf{Assessment}:
+				\begin{itemize}
+					\item Summarize your work in a short report, making it clear that the program works as intended.
+					
+					\item There will be one Moodle question following the problem statement above. Both students must finish the Moodle quiz.
+					There will be a test quiz on Moodle, where you can try your implementation as many times as you like. The test quiz will not be graded.
+					
+					\item Upload your report to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
+					
+					\item Upload your report to Moodle (it will be manually graded).
+				\end{itemize}
+				
+	\begin{lstlisting}[float=h, style=customc, language=php] 
+	<?php
+	function calc_signature($data) {
+	  // truncate signature to 10 bytes
+	  $sig = substr(hash_hmac('sha1', $data, $key), 0, 20);
+	  return $sig;
+	}
+	
+	function check_signature($sig1, $sig2) {
+	  $n = max(strlen($sig1), strlen($sig2));
+	  for ($i = 0; $i <= $n; $i++) {
+	    // chrcmp compares chars at index i, return 1 if chars are equal, 0 otherwise
+	    if (!chrcmp($sig1, $sig2, $i)) {
+	      return '0';
+	    }
+	  }
+	  return '1';
+	}
+	
+	// get the user supplied data
+	if (isset($_GET['name']) && isset($_GET['grade']) && isset($_GET['signature'])) {
+	  $name = $_GET['name'];
+	  $grade = $_GET['grade'];
+	  $sig = $_GET['signature'];
+	
+	  // concatenate name and grade
+	  $data = $name . $grade;
+	  $sig2 = calc_signature($data);
+	
+	  echo check_signature($sig, $sig2);
+	} else {
+	  echo 'Not enough arguments';
+	}
+	?>
+	\end{lstlisting}
+				
+			}	
+			\item[B-3]{Using textbook RSA for encrypting messages is insecure for several reasons, one being that it
 				is deterministic. There is a padding scheme known as \emph{Optimal Asymmetric Encryption Padding}, or OAEP, to solve
 				this problem. The OAEP padding scheme turns RSA into a probabilistic encryption scheme and adds the property
 				of \emph{all-or-nothing}, meaning that you either get the full message or nothing at all. Standard RSA may leak some
 				information without revealing the complete secret.
 				
-				The latest version of OAEP is given in RFC 8017. In this problem you will implement one part of OAEP directly from the RFC specification, namely the MGF1 function. This function takes an input string of arbitrary length and outputs a string of (almost) arbitrary length. The specification of MGF1 can be found in Appendix B.2.1 of RFC 8017 and you will also need to implement the I2OSP function in Section 4.1. In this assignment you will use the SHA-1 hash function as the hash function in MGF1.\\
-				Your program will take two inputs, one \texttt{mgfSeed} and one \texttt{maskLen}, and output a string of \texttt{maskLen} bytes.
-				As an example the input
+				The latest version of OAEP is given in RFC 8017. In this problem you will implement OAEP in two steps directly from the RFC specification. The first step is to implement the MGF1 function. This function takes an input string of arbitrary length and outputs a string of (almost) arbitrary length. The specification of MGF1 can be found in Appendix B.2.1 of RFC 8017 and you will also need to implement the I2OSP function in Section 4.1. In this assignment you will use the SHA-1 hash function as the hash function in MGF1.\\
+				This program will take two inputs, one \texttt{mgfSeed} and one \texttt{maskLen}, and output a string of \texttt{maskLen} bytes.
+				As an example, the input
 				\begin{center}
 					\begin{tabular}{l}
 						\texttt{mgfSeed = 0123456789abcdef} (hexadecimal)\\
@@ -65,22 +128,13 @@
 					\texttt{18a65e36189833d99e55a68dedda1cce13a494c947817d25dc80d9b4586a}\\
 				\end{center}
 				Note again that both the \texttt{mgfSeed} and the output string are here written in their hexadecimal notation so the length of the mgfSeed is 8 bytes and the length of the output is 30 bytes.\\
-				\textbf{Assessment}:
-				\begin{itemize}
-					\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
-					One upload per group is sufficient.
-					
-					\item There will be one Moodle question following the problem statement above. 
-					\textbf{Both students must finish the Moodle quiz}.
-					There will be a test quiz on Moodle, where you can try your implementation as many times as you like on an example different from the one given above. The test quiz will not be graded.
-				\end{itemize}
-			}
-			\item[B-3]{In this assignment you will implement the rest of OAEP, using the MGF1 function from the previous assignment. The scheme is given in Section 7.1 of RFC 8017. Note that encryption and decryption is not a part of the assignment, but you should implement both the encoding and the decoding part of OAEP. The parameter L will be chosen as \texttt{null} in the scheme.
+				
+				With a working MGF1 function, the next step is to implement the rest of the OAEP scheme. The scheme is given in Section 7.1 of RFC 8017. Note that encryption and decryption is not a part of the assignment, but you should implement both the encoding and the decoding part of OAEP. The parameter L will be chosen as \texttt{null} in the scheme.
 				
 				Your implementation of \texttt{OAEP\_encode} will take two parameters, the message $M$ to be encoded and the seed, and output the encoded message $EM$; \texttt{OAEP\_encode}$(M)=EM$.
 				Your implementation of \texttt{OAEP\_decode} will take one parameter, the message $EM$ to be decoded, and output the decoded message $M$; \texttt{OAEP\_decode}$(EM)=M$. You should take hexadecimal strings as input and also output hexadecimal strings. The length of the encoded message should be 128 bytes, which would be preparing the message to be encrypted with 1024-bit RSA. 
 				
-				You can use the following test strings to check your implementation:
+				You can use the following hexadecimal test strings to check your implementation:
 				\begin{center}
 					\begin{tabular}{lcl}
 						\texttt{M} & = & \texttt{fd5507e917ecbe833878}\\
@@ -94,86 +148,21 @@
 				Having implemented OAEP directly from the specification and understanding how OAEP works, you now know how RSA is really used in practice!\\
 				\textbf{Assessment}:
 				\begin{itemize}
-					\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
 					One upload per group is sufficient.
-					\item There will be two Moodle questions following the problem statement above. One for encoding and one for decoding. 
-					\textbf{Both students must finish the Moodle quiz}.
+					\item There will be three Moodle questions following the problem statement above. One for MGF1, one for encoding and one for decoding. Both students must finish the Moodle quiz.
 					There will be a test quiz on Moodle, where you can try your implementation as many times as you like on an example different from the one given above. The test quiz will not be graded.
 				\end{itemize}
 				
 				
 			}
-			\item[B-4]{The security department at LTH is using a home made web page for giving student their grade in the best course
-				at LTH -- Advanced Web Security. The web page uses HTTP GET requests to handle the grading. Every message sent to the server
-				needs to be signed, using the HMAC-SHA1 algorithm, in order to be accepted. The URL is of the form\\
-				``\texttt{https://eitn41.eit.lth.se:3119/ha4/addgrade.php?name=Kalle\&grade=5\&signature=6823\ldots ba36}''.\\
-				Due to the web page being written by a hungover Ph.D. student, it is not as secure as one would expect.
-				The server side code is as follows:
-				\begin{lstlisting}[float=htb, style=customc, language=php] 
-				<?php
-				function calc_signature($data) {
-				// truncate signature to 10 bytes
-				$sig = substr(hash_hmac('sha1', $data, $key), 0, 20);
-				return $sig;
-				}
-				
-				function check_signature($sig1, $sig2) {
-				$n = max(strlen($sig1), strlen($sig2));
-				for ($i = 0; $i <= $n; $i++) {
-				// chrcmp compares chars at index i, return 1 if chars are equal, 0 otherwise
-				if (!chrcmp($sig1, $sig2, $i)) {
-				return '0';
-				}
-				}
-				return '1';
-				}
-				
-				// get the user supplied data
-				if (isset($_GET['name']) && isset($_GET['grade']) && isset($_GET['signature'])) {
-				$name = $_GET['name'];
-				$grade = $_GET['grade'];
-				$sig = $_GET['signature'];
-				
-				// concatenate name and grade
-				$data = $name . $grade;
-				$sig2 = calc_signature($data);
-				
-				echo check_signature($sig, $sig2);
-				} else {
-				echo 'Not enough arguments';
-				}
-				?>
-				\end{lstlisting}
-				
-				The signature is calculated as $s = \textrm{HMAC}(\textrm{name}||\textrm{grade}, k)$, where $||$ denotes 
-				string concatenation and $k$ is the secret key. The signature is truncated to 10 bytes (20 hexadecimal digits).
-				The function \texttt{chrcmp} is not optimized for the current hardware, 
-				thus taking a considerable amount of time.
-				Exploit the weakness in the web page to be able to send any message you like with a valid signature, 
-				without knowledge of the secret key. Propose a good way to counter these kind of attacks.
-				
-				Your program should take the name and grade as parameters and output a valid signature.
-				There will be a quiz where you will be given the name and grade. You shall answer with the
-				signature in hexadecimal.
-				
-				\textbf{Assessment}:
-				\begin{itemize}
-					\item Summarize your work in a short report, making it clear that the program works as intended.
-					
-					\item There will be one Moodle question following the problem statement above. 
-					\textbf{Both students must finish the Moodle quiz}.
-					
-					\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se.
-					
-					\item Upload your report to Moodle (it will be manually graded).
-				\end{itemize}
-			}
+		
 		\end{description}
 		
 		\clearpage
 		
 		\section*{C-Assignments}
-		\textbf{For grade 4, complete the C-assignment below and solve it in groups of two students.}
+		\textbf{For grade 4, complete the C-assignment below and solve it in groups of $\leq 2$ students.}
 		
 		\begin{description}
 			\item[C-1]{Anytime during an OTR chat, one may run SMP for mutual authentication. Here, you will implement
@@ -271,18 +260,17 @@
 				it should be represented (in Python3) as \texttt{b'\textbackslash x01\textbackslash xe0\textbackslash xf3'}. 
 				The function \\
 				\texttt{x.to\_bytes((x.bit\_length() + 7) // 8, 'big')} may come in handy. A similar Java function is
-				\texttt{num.toByteArray()}, where \texttt{num} is a \texttt{BigInteger}. Remeber to remove leading bytes of 
+				\texttt{num.toByteArray()}, where \texttt{num} is a \texttt{BigInteger}. Remember to remove leading bytes of 
 				\texttt{0x00} since Java represents the numbers in 2's complement.
 				
 				\textbf{Assessment}:
 				\begin{itemize}
-					\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
 					One upload per group is sufficient.
 					
 					\item There will be one Moodle question following the problem statement above. 
-					\textbf{Both students must finish the Moodle quiz}.
-					There will be a test quiz on Moodle, where you can try your implementation as many times as you like. 
-					The test quiz will not be graded.
+					Both students must finish the Moodle quiz.
+					There will be a test quiz on Moodle, where you can try your implementation as many times as you like. The test quiz will not be graded.
 				\end{itemize}
 			}
 			
