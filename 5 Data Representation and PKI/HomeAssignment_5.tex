@@ -23,6 +23,12 @@
 	\begin{description}
 		
 		\item[B-1]{The following is based on a true event. Joe User has created a private RSA key. Accidentally, it ended up on some public Internet location, i.e., some sort of cloud service. Joe tried to save the situation by ``censoring'' part of the published private key.
+			Joe User also posted an encrypted message on an online forum.
+			
+			You, being a curious hacker, want to recover the key (in PEM format) and decrypt the message.
+			
+			\textbf{Example:}\\
+			The censored private key:
 			\begin{verbatim}
 			$ cat key.pem
 			-----BEGIN RSA PRIVATE KEY-----
@@ -40,26 +46,24 @@
 			nLHLW26s1Fkg0hgS/RZBAkAFnE+7QvRCW4+v3OsIkN63f+GIjHfCuv8L15RpBLlf
 			XXQyOmmu8YekTu5vbFHtSAiLyuW1yCeSsNmKYkX6Ew99
 			-----END RSA PRIVATE KEY-----
-			\end{verbatim}
-			
-			Flo Friend has sent Joe User an encrypted message,
-			which you have intercepted:
+			\end{verbatim}	
+			The encrypted message:
 			\begin{verbatim}
 			Qe7+h9OPQ7PN9CmF0ZOmD32fwpJotrUL67zxdRvhBn2U3fDtoz4iUGRXNOxwUXdJ2Cmz7zjS0DE8
 			ST5dozBysByz/u1H//iAN+QeGlFVaS1Ee5a/TZilrTCbGPWxfNY4vRXHP6CB82QxhMjQ7/x90/+J
 			LrhdAO99lvmdNetGZjY=
 			\end{verbatim}
-			\begin{itemize}
-				\item[a)] Recover the private key in PEM format.
-				\item[b)] Decrypt the message.
-			\end{itemize}
-			There are several ways to solve this, so make sure that you clearly explain each step in your solution.\\
+			The decrypted message is:
+			\begin{verbatim}
+			This is secret
+			\end{verbatim}
+
 			Hint: OpenSSL can be very helpful, in particular in the decryption phase.\\
 			
 			\textbf{Assessment}:
 			\begin{itemize}
-				\item Upload your report to Urkund, paul.stankovski.lu@analys.urkund.se.
-				\item Upload your report to Moodle (it will be manually graded).
+				\item There will be one Moodle question following the problem statement above. \textbf{Both students must finish the Moodle quiz}.
+				There will be a test quiz on Moodle which you can use to test your solution. You can try the test quiz as many times as you like. The test quiz will not be graded.
 			\end{itemize}
 		}
 		
@@ -137,10 +141,12 @@
 					The second question (1.5p) will ask you to convert given integers $p$ and $q$ according to the full CRT-enhanced format given above. Your answer should be the Base64-encoding of the DER-encoding as a single line of text.\\
 					\textbf{Both students must finish the Moodle quiz}.
 					There will be a test quiz on Moodle that you can use to test your implementation. You can try the test quiz as many times as you like. The test quiz will not be graded.
-					\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
 				\end{itemize}
 			}
 		\end{description}
+
+		\clearpage
 		
 		\section*{C-Assignments}
 		\textbf{For grade 4, complete the C-assignment below and solve it in groups of two students.}
@@ -217,90 +223,91 @@
 				The PKG computed the private key, $r$, to be\\
 				\texttt{814a8c2282ca8f4d0f2b2b72dfeeee6e5e3d8f438c039bdb5d059550739fdcec}\\
 				Decrypting the above bits, we get [\texttt{1, 1, -1}] which we decode to \texttt{110}$_2$ = $6$.
-				\begin{lstlisting}[float=htb, style=customc, language=python, caption={The Jacobi symbol in Python.}, label={lst:jacobi}]
-				def jacobi(a, m):
-				j = 1
-				
-				a %= m
-				while a:
-				t = 0
-				while not a & 1:
-				a = a >> 1
-				t += 1
-				
-				if t&1 and m%8 in (3, 5):
-				j = -j
-				
-				if (a % 4 == m % 4 == 3):
-				j = -j
-				
-				a, m = m % a, a
-				
-				return j if m == 1 else 0
-				\end{lstlisting}
+\begin{lstlisting}[float=htb, style=customc, language=python, caption={The Jacobi symbol in Python.}, label={lst:jacobi}]
+def jacobi(a, m):
+	j = 1
+
+	a %= m
+	while a:
+			t = 0
+		while not a & 1:
+			a = a >> 1
+			t += 1
+
+		if t&1 and m%8 in (3, 5):
+			j = -j
+
+		if (a % 4 == m % 4 == 3):
+			j = -j
+
+		a, m = m % a, a
+
+	return j if m == 1 else 0
+\end{lstlisting}
 				
 				%\newpage
 				
-				\begin{lstlisting}[float=h, style=customc, language=java, caption={The Jacobi symbol in Java.}, label={lst:jacobi_java}]
-				import java.math.*;
-				
-				class Jacobi {
-				
-				static BigInteger zero = BigInteger.ZERO;
-				static BigInteger one = BigInteger.ONE;
-				static BigInteger two = new BigInteger("2");
-				static BigInteger three = new BigInteger("3");
-				static BigInteger four = new BigInteger("4");
-				static BigInteger five = new BigInteger("5");
-				static BigInteger eight = new BigInteger("8");
-				
-				public static void main(String[] args) {
-				BigInteger a = new BigInteger("12");
-				BigInteger b = new BigInteger("17");
-				System.out.println("jacobi (12/17) (= -1): " + jacobi(a, b));
-				}
-				
-				static int jacobi(BigInteger n, BigInteger m) {
-				int j = 1;
-				int t;
-				BigInteger tmp;
-				
-				n = n.mod(m);
-				while (!n.equals(zero)) {
-				t = 0;
-				
-				while (!n.and(one).equals(one)) {
+\begin{lstlisting}[float=h, style=customc, language=java, caption={The Jacobi symbol in Java.}, label={lst:jacobi_java}]
+import java.math.*;
+
+class Jacobi {
+
+	static BigInteger zero = BigInteger.ZERO;
+	static BigInteger one = BigInteger.ONE;
+	static BigInteger two = new BigInteger("2");
+	static BigInteger three = new BigInteger("3");
+	static BigInteger four = new BigInteger("4");
+	static BigInteger five = new BigInteger("5");
+	static BigInteger eight = new BigInteger("8");
+
+	public static void main(String[] args) {
+		BigInteger a = new BigInteger("12");
+		BigInteger b = new BigInteger("17");
+		System.out.println("jacobi (12/17) (= -1): " + jacobi(a, b));
+	}
+
+	static int jacobi(BigInteger n, BigInteger m) {
+		int j = 1;
+		int t;
+		BigInteger tmp;
+
+		n = n.mod(m);
+		while (!n.equals(zero)) {
+			t = 0;
+
+			while (!n.and(one).equals(one)) {
 				n = n.divide(two);
 				t++;
-				}
-				
-				BigInteger mmod8 = m.mod(eight);
-				if (((t & 0x01) == 1) && (mmod8.equals(three) || mmod8.equals(five))) {
+			}
+
+			BigInteger mmod8 = m.mod(eight);
+			if (((t & 0x01) == 1) && (mmod8.equals(three) || mmod8.equals(five))) {
 				j = -j;
-				}
-				
-				if (n.mod(four).equals(three) && m.mod(four).equals(three)) {
+			}
+
+			if (n.mod(four).equals(three) && m.mod(four).equals(three)) {
 				j = -j;
-				}
-				
-				tmp = n;
-				n = m.mod(n);
-				m = tmp;
-				}
-				if (m.equals(one)) {
-				return j;
-				}
-				return 0;
-				}
-				
-				}
-				\end{lstlisting}
+			}
+
+			tmp = n;
+			n = m.mod(n);
+			m = tmp;
+		}
+
+		if (m.equals(one)) {
+			return j;
+		}
+		return 0;
+	}
+
+}
+\end{lstlisting}
 				
 				\textbf{Do not fear}: The assignment is not as hard as it looks.
 				
 				\textbf{Assessment}:
 				\begin{itemize}
-					\item Upload your code to Urkund, paul.stankovski.lu@analys.urkund.se.
+					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
 					One upload per group is sufficient.
 					
 					\item There will be one Moodle question following the problem statement above. 
