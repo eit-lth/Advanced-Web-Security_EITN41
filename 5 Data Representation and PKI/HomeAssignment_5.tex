@@ -18,7 +18,7 @@
 	\maketitle
 	
 	\section*{B-assignments}
-	\textbf{For grade 3, complete the three B-assignments below and solve them in groups of two students.}
+	\textbf{For grade 3, complete the three B-assignments below and solve them in groups of $\leq 2$ students.}
 	
 	\begin{description}
 		
@@ -58,7 +58,7 @@
 			This is secret
 			\end{verbatim}
 
-			Hint: OpenSSL can be very helpful, in particular in the decryption phase.\\
+			\textbf{Hint:} OpenSSL can be very helpful, in particular in the decryption phase.\\\\
 			
 			\textbf{Assessment}:
 			\begin{itemize}
@@ -95,17 +95,17 @@
 				\end{verbatim}
 				First learn how ASN.1 works. Then implement your own function for DER-encoding large (up to 2048-bit) integers.\\
 				
-				Example 1: The (decimal) integer $2530368937$ has TLV DER-encoding \verb!02050096d25da9!. Note that a zero byte \verb!00! is appended to the hex representation of the integer value. This is because the value is represented in two's complement, which is a \textit{signed} representation of integers where the highest bit is the sign bit. Without the zero padding, the number \verb!96d25da9! would therefore represent a negative value.\\
+				\textbf{Example 1:} The (decimal) integer $2530368937$ has TLV DER-encoding \verb!02050096d25da9!. Note that a zero byte \verb!00! is appended to the hex representation of the integer value. This is because the value is represented in two's complement, which is a \textit{signed} representation of integers where the highest bit is the sign bit. Without the zero padding, the number \verb!96d25da9! would therefore represent a negative value.\\
 				
 				While the encoding above uses the short definite form to represent the length part L in the TLV encoding, your implementation needs to support long definite form (using \verb!81! and \verb!82!) as well.\\
 				
-				Example 2: If, say, 129 bytes are needed to represent the integer (the value part V of the TLV), then the L part is represented as \verb!8181!. The first \verb!81! denotes long definite length encoding with one length byte, and the length itself is encoded in the second byte (129 is \verb!81! in hex). Note that here we do not pad with zero bytes as in Example 1 (lengths are never negative).\\
+				\textbf{Example 2:} If, say, 129 bytes are needed to represent the integer (the value part V of the TLV), then the L part is represented as \verb!8181!. The first \verb!81! denotes long definite length encoding with one length byte, and the length itself is encoded in the second byte (129 is \verb!81! in hex). Note that here we do not pad with zero bytes as in Example 1 (lengths are never negative).\\
 				
 				Your core function should output a byte vector, but prepare an alternative version that outputs a string representation of the byte vector, as the one shown in Example 1. The alternative implementation will be useful later when you take the Moodle quiz.
 				
 				Using this core function as a subroutine, implement another function that takes the private RSA parameters $p$ and $q$ as input and outputs the entire Base64-encoded DER-encoding of that private key according to the above format. This is usually what you will find if you look inside PEM-files containing private RSA keys.\\
 				
-				Example 3: Given $p=2530368937$, $q=2612592767$ and $e=65537$ (all decimal), you can compute the following values.\\
+				\textbf{Example 3:} Given $p=2530368937$, $q=2612592767$ and $e=65537$ (all decimal), you can compute the following values.\\
 				\begin{center}
 					\begin{tabular}{rrl}
 						parameter & decimal value & DER-encoding\\\hline
@@ -130,18 +130,20 @@
 				
 				\verb!MDwCAQACCFu+XQXUfXbXAgMBAAECCDZpw5W5z3MhAgUAltJdqQIFAJu5AH8CBHgJdgECBFlLQGkCBFjc97Q=!\\
 				
-				Hint: There are several online parsing tools that you may find useful during development, e.g.,\\ 
+				\textbf{Hint:} There are several online parsing tools that you may find useful during development, e.g.,\\ 
 				\url{https://lapo.it/asn1js/}.\\
-				Note: You may utilize third-party code for Base64-encoding.
+				Note: You may utilize third-party code for Base64-encoding.\\\\
 				
 				\textbf{Assessment}:
 				\begin{itemize}
+					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
+					One upload per group is sufficient.
 					\item There will be two Moodle questions for this part. The first will ask you to DER-encode integers. That is, given an integer, you will answer with the DER-encoding of that integer in textual format, as detailed above.
 					
 					The second question will ask you to convert given integers $p$ and $q$ according to the full CRT-enhanced format given above. Your answer should be the Base64-encoding of the DER-encoding as a single line of text.\\
 					\textbf{Both students must finish the Moodle quiz}.
 					There will be a test quiz on Moodle that you can use to test your implementation. You can try the test quiz as many times as you like. The test quiz will not be graded.
-					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
+					
 				\end{itemize}
 			}
 		\end{description}
@@ -149,7 +151,7 @@
 		\clearpage
 		
 		\section*{C-Assignments}
-		\textbf{For grade 4, complete the C-assignment below and solve it in groups of two students.}
+		\textbf{For grade 4, complete the C-assignment below and solve it in groups of $\leq 2$ students.}
 		
 		\begin{description}
 			\item[C-1]{A problem with public key cryptography using a \emph{Public Key Infrastructure}, PKI, is that
@@ -179,7 +181,7 @@
 				where $p$ is an odd prime number. For composite numbers, e.g. $M = p \cdot q$, the \emph{Jacobi symbol} is used
 				instead, which is just a product of the Legendre symbol of the prime factors of $M$.
 				There are more properties for the Jacobi symbol\footnote{\url{https://en.wikipedia.org/wiki/Jacobi_symbol#Properties}}. You are given the code
-				for calculating the Jacobi symbol, see listing \ref{lst:jacobi} and \ref{lst:jacobi_java}. 
+				for calculating the Jacobi symbol\footnote{\url{https://github.com/eit-lth/Advanced-Web-Security_EITN41/tree/master/5\%20Data\%20Representation\%20and\%20PKI/code/}}. 
 				
 				Read the paper,
 				\begin{center}
@@ -198,12 +200,16 @@
 					\item[-] the primes, $p$ and $q$,
 					\item[-] a list of the encrypted bits.
 				\end{itemize}
+				The program should output the user's private key in (as a hexadecimal string) as well as the decrypted bits, written as a number (in base 10).
+				
 				To derive the public \emph{identity value}, $a$, use SHA-1 repeatedly on the given \emph{identity}, e.g.
 				\begin{align*}
 				a_{i+1} &= H(a_i) \\
 				a_0 &= \text{\texttt{alice@crypto.sec}}
 				\end{align*}
 				Encode the identity, e.g. \texttt{alice@crypto.sec}, as a byte array.
+				
+				\textbf{Do not fear}: The assignment is not as hard as it looks.
 				
 				\textbf{Example}:\\
 				You have received an encrypted message to your mail, which is your public identity.
@@ -223,87 +229,9 @@
 				The PKG computed the private key, $r$, to be\\
 				\texttt{814a8c2282ca8f4d0f2b2b72dfeeee6e5e3d8f438c039bdb5d059550739fdcec}\\
 				Decrypting the above bits, we get [\texttt{1, 1, -1}] which we decode to \texttt{110}$_2$ = $6$.
-\begin{lstlisting}[float=htb, style=customc, language=python, caption={The Jacobi symbol in Python.}, label={lst:jacobi}]
-def jacobi(a, m):
-	j = 1
 
-	a %= m
-	while a:
-			t = 0
-		while not a & 1:
-			a = a >> 1
-			t += 1
-
-		if t&1 and m%8 in (3, 5):
-			j = -j
-
-		if (a % 4 == m % 4 == 3):
-			j = -j
-
-		a, m = m % a, a
-
-	return j if m == 1 else 0
-\end{lstlisting}
 				
-				%\newpage
-				
-\begin{lstlisting}[float=h, style=customc, language=java, caption={The Jacobi symbol in Java.}, label={lst:jacobi_java}]
-import java.math.*;
-
-class Jacobi {
-
-	static BigInteger zero = BigInteger.ZERO;
-	static BigInteger one = BigInteger.ONE;
-	static BigInteger two = new BigInteger("2");
-	static BigInteger three = new BigInteger("3");
-	static BigInteger four = new BigInteger("4");
-	static BigInteger five = new BigInteger("5");
-	static BigInteger eight = new BigInteger("8");
-
-	public static void main(String[] args) {
-		BigInteger a = new BigInteger("12");
-		BigInteger b = new BigInteger("17");
-		System.out.println("jacobi (12/17) (= -1): " + jacobi(a, b));
-	}
-
-	static int jacobi(BigInteger n, BigInteger m) {
-		int j = 1;
-		int t;
-		BigInteger tmp;
-
-		n = n.mod(m);
-		while (!n.equals(zero)) {
-			t = 0;
-
-			while (!n.and(one).equals(one)) {
-				n = n.divide(two);
-				t++;
-			}
-
-			BigInteger mmod8 = m.mod(eight);
-			if (((t & 0x01) == 1) && (mmod8.equals(three) || mmod8.equals(five))) {
-				j = -j;
-			}
-
-			if (n.mod(four).equals(three) && m.mod(four).equals(three)) {
-				j = -j;
-			}
-
-			tmp = n;
-			n = m.mod(n);
-			m = tmp;
-		}
-
-		if (m.equals(one)) {
-			return j;
-		}
-		return 0;
-	}
-
-}
-\end{lstlisting}
-				
-				\textbf{Do not fear}: The assignment is not as hard as it looks.
+			
 				
 				\textbf{Assessment}:
 				\begin{itemize}
