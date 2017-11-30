@@ -101,9 +101,9 @@
 				
 				\textbf{Example 2:} If, say, 129 bytes are needed to represent the integer (the value part V of the TLV), then the L part is represented as \verb!8181!. The first \verb!81! denotes long definite length encoding with one length byte, and the length itself is encoded in the second byte (129 is \verb!81! in hex). Note that here we do not pad with zero bytes as in Example 1 (lengths are never negative).\\
 				
-				Your core function should output a byte vector, but prepare an alternative version that outputs a string representation of the byte vector, as the one shown in Example 1. The alternative implementation will be useful later when you take the Moodle quiz.
+				Your core function should output a byte vector, but prepare an alternative version that outputs a hexadecimal string representation of the byte vector, as the one shown in Example 1. The alternative implementation will be useful later when you take the Moodle quiz.
 				
-				Using this core function as a subroutine, implement another function that takes the private RSA parameters $p$ and $q$ as input and outputs the entire Base64-encoded DER-encoding of that private key according to the above format. This is usually what you will find if you look inside PEM-files containing private RSA keys.\\
+				Using this core function as a subroutine, implement another function that takes the private RSA parameters $p$ and $q$ as input (in decimal notation) and outputs the entire Base64-encoded DER-encoding of that private key according to the above format. This is usually what you will find if you look inside PEM-files containing private RSA keys.\\
 				
 				\textbf{Example 3:} Given $p=2530368937$, $q=2612592767$ and $e=65537$ (all decimal), you can compute the following values.\\
 				\begin{center}
