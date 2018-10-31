@@ -13,7 +13,7 @@
 	
 	\title{Home Assignment 5}
 	\author{Advanced Web Security}
-	\date{2017}
+	\date{\the\year}
 	
 	\maketitle
 	
@@ -62,19 +62,19 @@
 			
 			\textbf{Assessment}:
 			\begin{itemize}
-				\item There will be one Moodle question following the problem statement above. \textbf{Both students must finish the Moodle quiz}.
+				\item There will be one Moodle question following the problem statement above. Both students must finish the Moodle quiz.
 				There will be a test quiz on Moodle which you can use to test your solution. You can try the test quiz as many times as you like. The test quiz will not be graded.
 			\end{itemize}
 		}
 		
-		\item[B-2]{CMS can be used to nest encryptions, signatures MACs and message digests in any order. CMS is e.g., used by the S/MIME message format for sending signed and encrypted emails. Alice has sent an important message to Bob using the S/MIME format. Instead of signing it, she has first hashed the message, and then encrypted it using the Enveloped Data content type.
+		\item[B-2]{CMS can be used to nest encryptions, signatures, MACs and message digests in any order. CMS is e.g., used by the S/MIME message format for sending signed and encrypted emails. Alice has sent an important message to Bob using the S/MIME format. Instead of signing it, she has first hashed the message, and then encrypted it using the Enveloped Data content type.
 			
 			You will receive 3 emails, named mail1.msg, mail2.msg and mail3.msg. All are sent from Alice to Bob by first hashing them using \\ \texttt{openssl cms -digest\_create ...}\\ and then enveloping the result using \\\texttt{openssl cms -encrypt ...}\\However, only one of the messages has a valid hash. Your task is to find the subject line of the message with a valid hash. The subject will be an integer. The problem is easiest solved by using the \texttt{openssl cms} tool.
 			
 			In addition to the emails, you will be given Bob's private key (\texttt{keyreceiver.pem}), Bob's certificate (\texttt{certreceiver.pem}) and a CA certificate (\texttt{CAcert.pem}) that has been used to sign Bob's certificate.\\
 			\textbf{Assessment}:
 			\begin{itemize}
-				\item There will be one Moodle question following the problem statement above. \textbf{Both students must finish the Moodle quiz}.
+				\item There will be one Moodle question following the problem statement above. Both students must finish the Moodle quiz.
 				There will be a test quiz on Moodle which you can use to test your OpenSSL commands. You can try the test quiz as many times as you like. The test quiz will not be graded.
 			\end{itemize}}
 			
@@ -141,7 +141,7 @@
 					\item There will be two Moodle questions for this part. The first will ask you to DER-encode integers. That is, given an integer, you will answer with the DER-encoding of that integer in textual format, as detailed above.
 					
 					The second question will ask you to convert given integers $p$ and $q$ according to the full CRT-enhanced format given above. Your answer should be the Base64-encoding of the DER-encoding as a single line of text.\\
-					\textbf{Both students must finish the Moodle quiz}.
+					Both students must finish the Moodle quiz.
 					There will be a test quiz on Moodle that you can use to test your implementation. You can try the test quiz as many times as you like. The test quiz will not be graded.
 					
 				\end{itemize}
@@ -157,7 +157,7 @@
 			\item[C-1]{A problem with public key cryptography using a \emph{Public Key Infrastructure}, PKI, is that
 				the keys need to be distributed prior to encryption which may not always be feasible.
 				Instead, one may use \emph{Identity Based Encryption}, IBE. In an IBE system, the public key is generated
-				from a known identity, e.g. an email address. A trusted third party, known as the \emph{Private Key Generator}, PKG,
+				from a known identity, e.g., an email address. A trusted third party, known as the \emph{Private Key Generator}, PKG,
 				generates the corresponding private key.
 				
 				One implementation of an IBE system is known as Cock's encryption scheme,
@@ -236,10 +236,10 @@
 				\textbf{Assessment}:
 				\begin{itemize}
 					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
-					One upload per group is sufficient.
+					Only one student per group must do this.
 					
 					\item There will be one Moodle question following the problem statement above. 
-					\textbf{Both students must finish the Moodle quiz}.
+					Both students must finish the Moodle quiz.
 					There will be a test quiz on Moodle, where you can try your implementation as many times as you like. 
 					The test quiz will not be graded.
 				\end{itemize}

@@ -28,7 +28,7 @@
 	
 	\title{Home Assignment 4}
 	\author{Advanced Web Security}
-	\date{2017}
+	\date{\the\year}
 	
 	\maketitle
 	
@@ -66,7 +66,7 @@
 					\item There will be one Moodle question following the problem statement above. Both students must finish the Moodle quiz.
 					There will be a test quiz on Moodle, where you can try your implementation as many times as you like. The test quiz will not be graded.
 					
-					\item Upload your report to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
+					\item Upload your report to Urkund, jonathan.sonnerup.lu@analys.urkund.se. Only one student per group must do this.
 					
 					\item Upload your report to Moodle (it will be manually graded).
 				\end{itemize}
@@ -131,8 +131,8 @@
 				
 				With a working MGF1 function, the next step is to implement the rest of the OAEP scheme. The scheme is given in Section 7.1 of RFC 8017. Note that encryption and decryption is not a part of the assignment, but you should implement both the encoding and the decoding part of OAEP. The parameter L will be chosen as \texttt{null} in the scheme.
 				
-				Your implementation of \texttt{OAEP\_encode} will take two parameters, the message $M$ to be encoded and the seed, and output the encoded message $EM$; \texttt{OAEP\_encode}$(M)=EM$.
-				Your implementation of \texttt{OAEP\_decode} will take one parameter, the message $EM$ to be decoded, and output the decoded message $M$; \texttt{OAEP\_decode}$(EM)=M$. You should take hexadecimal strings as input and also output hexadecimal strings. The length of the encoded message should be 128 bytes, which would be preparing the message to be encrypted with 1024-bit RSA. 
+				Your implementation of \texttt{OAEP\_encode} will take two parameters, the message $M$ to be encoded and the seed, and output the encoded message $\textit{EM}$; \texttt{OAEP\_encode}$(M)=\textit{EM}$.
+				Your implementation of \texttt{OAEP\_decode} will take one parameter, the message $\textit{EM}$ to be decoded, and output the decoded message $M$; \texttt{OAEP\_decode}$(\textit{EM})=M$. You should take hexadecimal strings as input and also output hexadecimal strings. The length of the encoded message should be 128 bytes, which would be preparing the message to be encrypted with 1024-bit RSA. 
 				
 				You can use the following hexadecimal test strings to check your implementation:
 				\begin{center}
@@ -149,7 +149,7 @@
 				\textbf{Assessment}:
 				\begin{itemize}
 					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
-					One upload per group is sufficient.
+					Only one student per group must do this.
 					\item There will be three Moodle questions following the problem statement above. One for MGF1, one for encoding and one for decoding. Both students must finish the Moodle quiz.
 					There will be a test quiz on Moodle, where you can try your implementation as many times as you like on an example different from the one given above. The test quiz will not be graded.
 				\end{itemize}
@@ -168,10 +168,10 @@
 			\item[C-1]{Anytime during an OTR chat, one may run SMP for mutual authentication. Here, you will implement
 				a simplified version of the OTR protocol, utilizing SMP, see protocol below. In the first part,
 				you will need to negotiate a shared key using the Diffie-Hellman key exchange.
-				Secondly, you will run the Socialist Millionaire protocol, yielding mutual authentication.
+				Secondly, you will run the Socialist Millionaire Protocol, yielding mutual authentication.
 				Lastly, you shall send an encrypted message to the server. The server then replies with a response for you to enter in Moodle.
 				
-				All operations are to be calculated in the group $\mathbb{Z}_p^*$, i.e. mod $p$. The generators are $g = g_1 = 2$.
+				All operations are to be calculated in the group $\mathbb{Z}_p^*$, i.e., mod $p$. The generators are $g = g_1 = 2$.
 				The prime number $p$ is defined (in the OTR documentation) as:
 				\begin{verbatim}
 				FFFFFFFF FFFFFFFF C90FDAA2 2168C234 C4C6628B 80DC1CD1
@@ -190,7 +190,7 @@
 				\texttt{num} is a \texttt{BigInteger} object with the value $1337$. All randomly chosen numbers are assumed to be in
 				$\mathbb{Z}_p^*$. The numbers sent from Bob will or will not be acknowledged by Alice. You will take the role as Bob, meaning
 				that you have to read the ack/nak messages as well. In the last part of the protocol (Secure Chat), the encryption
-				is a simple xor, using the shared D-H key as a One Time Pad (OTP), e.g. 
+				is a simple xor, using the shared D-H key as a One Time Pad (OTP), e.g., 
 				\emph{enc\_msg} = \emph{msg} \texttt{xor} \emph{D-H key}.
 				
 				%\begin{figure}[h]
@@ -256,7 +256,7 @@
 				The shared secret is calculated as
 				$H(g^{xy} ~\| ~\textrm{'shared passphrase'})$
 				where the shared passphrase is ``\texttt{eitn41~<3}'', and $H$ is SHA-1. 
-				You shall interpret $g^{xy}$ and the passphrase as a UTF-8 encoded byte array, e.g. if the number is $123123$,
+				You shall interpret $g^{xy}$ and the passphrase as a UTF-8 encoded byte array, e.g., if the number is $123123$,
 				it should be represented (in Python3) as \texttt{b'\textbackslash x01\textbackslash xe0\textbackslash xf3'}. 
 				The function \\
 				\texttt{x.to\_bytes((x.bit\_length() + 7) // 8, 'big')} may come in handy. A similar Java function is
@@ -266,7 +266,7 @@
 				\textbf{Assessment}:
 				\begin{itemize}
 					\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se.
-					One upload per group is sufficient.
+					Only one student per group must do this.
 					
 					\item There will be one Moodle question following the problem statement above. 
 					Both students must finish the Moodle quiz.
