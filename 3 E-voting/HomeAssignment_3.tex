@@ -22,21 +22,36 @@
 \begin{description}
 	\item[B-1]{Assume that we have a commitment scheme $x = h(v, k)$, where $v$ is a 1-bit commitment,
 		$k$ is a $K$-bit random string and $h$ is a hash function with output truncated to $X$ bits.
-		Fix $K$ to be 16 bits. For different appropriate choices of $X$, simulate
+		Fix $K$ to be 16 bits. For different appropriate choices of $X$, simulate the following.
 		\begin{itemize}
-			\item[a)] The probability of breaking the binding property of the scheme.
-			\item[b)] The probability of breaking the concealing property of the scheme.
+			\item[1)] The probability of breaking the binding property of the scheme. Note that we assume a non-idiot attacker. This means that the attacker optimizes her chances of success by making sure to choose a value for $k$ that she knows can break the binding property \textit{before} she commits to $v$. This attack is closely related to a well-known property for hash functions.
+			\item[2)] The probability of breaking the concealing property of the scheme. Here the attack is carried out by the receiver of the commitment and it is thus not possible to choose optimum values before the commitment is made. This attack is also closely related to a well-known property for hash functions.
 		\end{itemize}
-		What can you say about how the probabilities varies with $X$? Make sure you clearly present
-		your algorithms for computing the probabilities.
+		Write a short report that summarizes your work and your findings. Make sure that your report includes at least the following aspects.
+		\begin{itemize}
+			\item Describe in general terms how an attacker would proceed to perform the two attacks.
+			\item Clearly present your algorithms for computing the probabilities.
+			\item What can you say about how the probabilities varies with $X$? Plot graphs illustrating the probabilities. 
+			\item Identify the hash function properties that the two attacks relate to. What is the relation? Treat both cases separately. A hint is that the birthday paradox is closely related to one of the two cases.
+		\end{itemize}
+		To get on the right track, it can be useful to consider two column vectors, representing all possible values for $x$:	
+		\begin{center}
+		\begin{tabular}{c|c}
+			$v=0$ & $v=1$ \\\hline
+			$h(0,0)$ & $h(1,0)$ \\
+			$h(0,1)$ & $h(1,1)$ \\
+			$h(0,2)$ & $h(1,2)$ \\
+			\vdots & \vdots \\
+			$h(0,2^{16}-1)$ & $h(1,2^{16}-1)$ \\
+		\end{tabular}
+		\end{center}
+		Now, what is required for breaking the binding property? What is required for breaking the concealing property?\\\\
 		
 		\textbf{Assessment}:
 		\begin{itemize}
-			\item Summarize your work in a short report, making it clear that the program works as intended.
-			
 			\item Upload your report to Urkund, jonathan.sonnerup.lu@analys.urkund.se. 
 			Only one student per group must do this.
-			
+			\item Upload your code to Urkund, jonathan.sonnerup.lu@analys.urkund.se. Only one student per group must do this.
 			\item Upload your report to Moodle (it will be manually graded). Both students must do this.
 		\end{itemize}}
 		
