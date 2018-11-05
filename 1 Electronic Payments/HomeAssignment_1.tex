@@ -192,10 +192,10 @@
 			scheme given in the lecture notes.
 			\begin{itemize}
 				\item You may use a variant of RSA with easily manageable numbers. Note though that too small numbers might get you in trouble when you try to unblind if you are not careful.
-				\item The data transfer can be simulated locally inside the program.
+				\item The data transfer can be simulated locally inside the program, i.e., you do not have to communicate data over a network.
 				\item The extended Euclidean algorithm can be used to find the inverse of 3 mod $x$. You are free to use existing code for this algorithm as long as you reference it properly.
-				\item Choose sensible functions $f$ and $h$.
-				\item Be careful when choosing your $r_i$. Not all choices are suitable.
+				\item Choose sensible functions $f$ and $h$ so that the specific properties, as per the paper, are fulfilled. Motivate your choices clearly.
+				\item Be careful when choosing your $r_i$. Not all choices are suitable, why? Remember that you need to be able to un-blind the values later on.
 			\end{itemize}
 			
 			\textbf{Assessment}:
