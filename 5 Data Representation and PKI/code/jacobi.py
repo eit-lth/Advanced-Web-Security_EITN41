@@ -6,7 +6,7 @@ def jacobi (a, m):
 		while not a & 1:
 			a = a >> 1
 			t += 1
-		if t&1 and m%8 in (3, 5):
+		if t & 1 and m % 8 in (3, 5):
 			j = -j
 		if (a % 4 == m % 4 == 3):
 			j = -j
