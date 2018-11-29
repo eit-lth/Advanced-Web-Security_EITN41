@@ -27,6 +27,8 @@
 			\item[1)] The probability of breaking the binding property of the scheme. Note that we assume a non-idiot attacker. This means that the attacker optimizes her chances of success by making sure to choose a value for $k$ that she knows can break the binding property \textit{before} she commits to $v$. This attack is closely related to a well-known property for hash functions.
 			\item[2)] The probability of breaking the concealing property of the scheme. Here the attack is carried out by the receiver of the commitment and it is thus not possible to choose optimum values before the commitment is made. This attack is also closely related to a well-known property for hash functions.
 		\end{itemize}
+		For clarity, we define the probablity of breaking the concealing property as the ratio between the number of $x$ values for which the committed bit can be uniquely determined and the total number of possible $x$ values. 
+		
 		Write a short report that summarizes your work and your findings. Make sure that your report includes at least the following aspects.
 		\begin{itemize}
 			\item Describe in general terms how an attacker would proceed to perform the two attacks.
