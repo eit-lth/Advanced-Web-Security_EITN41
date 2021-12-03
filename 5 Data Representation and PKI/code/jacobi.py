@@ -1,7 +1,7 @@
 def jacobi (a, m):
 	j = 1
 	a %= m
-	while a
+	while a:
 		t = 0
 		while not a & 1:
 			a = a >> 1
