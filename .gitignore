@@ -9,3 +9,5 @@
 *.swp
 
 *.gz
+
+__pycache__
